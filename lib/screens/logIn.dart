@@ -137,7 +137,8 @@ class _LogInState extends ConsumerState<LogIn> {
                               
                             );
                             // ref.read(userID.notifier).state=success.userID!;
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Home(userID: userID)));
+                            print(success.userID!);
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Home(userID: success.userID!)));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Login Failed')),

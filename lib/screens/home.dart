@@ -1,5 +1,7 @@
 import 'package:bus_tracker/screens/logIn.dart';
 import 'package:bus_tracker/screens/report.dart';
+import 'package:bus_tracker/screens/tracks.dart';
+import 'package:bus_tracker/screens/view_schedule.dart';
 import 'package:bus_tracker/widgets/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -98,7 +100,9 @@ class _HomeState extends ConsumerState<Home> {
                     width: double.infinity,
                     height: 70,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of( context).push(MaterialPageRoute(builder: (context)=>Track(userID: widget.userID)));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff053160),
 
@@ -121,7 +125,9 @@ class _HomeState extends ConsumerState<Home> {
                     width: double.infinity,
                     height: 70,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewSchedule(userID: widget.userID)));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff053160),
 
@@ -145,7 +151,7 @@ class _HomeState extends ConsumerState<Home> {
                     height: 70,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Report(userID: "someUserID")));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Report(userID: widget.userID)));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff053160),

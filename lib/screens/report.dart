@@ -1,3 +1,5 @@
+import 'package:bus_tracker/models/reportModel.dart';
+import 'package:bus_tracker/providers/get_providers.dart';
 import 'package:bus_tracker/widgets/notification.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,15 @@ class _ReportState extends ConsumerState<Report> {
   final controller = TextEditingController();
   final controller1 = TextEditingController();
   final controller2 = TextEditingController();
-  final controller3 = TextEditingController();
+  // Remove controller3, use dropdown for department
+  String? _selectedDepartment;
+  final List<String> _departments = [
+    'CSE',
+    'SWE',
+    'EEE',
+    'IT',
+    'Other',
+  ];
   final controller4 = TextEditingController();
   String? _selectedFileName;
   @override
@@ -29,7 +39,9 @@ class _ReportState extends ConsumerState<Report> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     icon: Icon(Icons.arrow_back, size: 30),
                   ),
                   Text(
@@ -125,13 +137,25 @@ class _ReportState extends ConsumerState<Report> {
                       ),
                     ),
 
-                    TextField(
-                      controller: controller3,
+                    DropdownButtonFormField<String>(
+                      value: _selectedDepartment,
+                      items: _departments
+                          .map((dept) => DropdownMenuItem(
+                                value: dept,
+                                child: Text(dept),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDepartment = value;
+                        });
+                      },
                       decoration: InputDecoration(
                         filled: true,
                         border: InputBorder.none,
                         fillColor: Colors.white,
                       ),
+                      
                     ),
                     Text(
                       "Description    *",
@@ -167,7 +191,7 @@ class _ReportState extends ConsumerState<Report> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Drop files here or, ",
+                            _selectedFileName ?? "Drop files here or,",
                             style: TextStyle(
                               color: const Color.fromARGB(255, 0, 0, 0),
                               fontSize: 16,
@@ -200,7 +224,9 @@ class _ReportState extends ConsumerState<Report> {
                       children: [
                         Spacer(),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -218,7 +244,26 @@ class _ReportState extends ConsumerState<Report> {
                         ),
                         SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                          final success = await ref.read(
+                            submitReportProvider(
+                              ReportModel(userID: widget.userID, firstName: controller.text, lastName: controller1.text, email: controller2.text, department: _selectedDepartment ?? '', issueDescription: controller4.text, attachment: _selectedFileName ?? ''),
+                            ).future,
+                          );
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('submitted Successful'),
+                              ),
+                            );
+                            // ref.read(userID.notifier).state=success.userID!;
+                            Navigator.of(context).pop();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Submission Failed')),
+                            );
+                          }
+                        },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff053160),
                             shape: RoundedRectangleBorder(
