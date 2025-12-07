@@ -13,16 +13,16 @@ class LiveTrack extends ConsumerStatefulWidget {
 }
 
 class _LiveTrackState extends ConsumerState<LiveTrack> {
-  @override
-void initState() {
-  super.initState();
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    final buses = await ref.read(fetchBusesProvider([]).future);
-    setState(() {
-      busList = buses;
-    });
-  });
-}
+//   @override
+// void initState() {
+//   super.initState();
+//   WidgetsBinding.instance.addPostFrameCallback((_) async {
+//     final buses = await ref.read(fetchBusesProvider([]).future);
+//     setState(() {
+//       busList = buses;
+//     });
+//   });
+// }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
